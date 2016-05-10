@@ -13,8 +13,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class GitHubFacadeServiceApplicationTests {
 
 	@Test
-	public void contextLoads() {
-	}
-
-	//TODO JM: check RepoService Component loaded
+	public void contextLoads() {}
 }
