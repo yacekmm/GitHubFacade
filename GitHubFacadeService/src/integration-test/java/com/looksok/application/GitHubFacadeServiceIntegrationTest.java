@@ -26,11 +26,11 @@ public class GitHubFacadeServiceIntegrationTest {
     }
 
     @Test
-	public void requestsSampleRepo() {
+	public void badRequestOnNoParams() {
         RestAssured.when()
-                .get("/api")
+                .get("/repositories/")
                 .then()
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
 	}
 
 }

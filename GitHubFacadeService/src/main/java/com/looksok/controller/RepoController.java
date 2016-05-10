@@ -27,7 +27,7 @@ public class RepoController {
         this.repoDetailsService = repoDetailsService;
     }
 
-    @RequestMapping(value="/api/", method= RequestMethod.GET)
+    @RequestMapping(value="/repositories", method= RequestMethod.GET)
     public ResponseEntity<RepoDetailsDto> getRepoDetails(String owner, String repoName){
         if(Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)){
             log.info("BadRequest: params must not be null or empty");
@@ -37,6 +37,7 @@ public class RepoController {
         if(result.isPresent()) {
             return result.get();
         }else{
+            log.error("Error getting repo details");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
