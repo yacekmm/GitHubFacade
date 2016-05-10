@@ -32,6 +32,7 @@ task wrapper(type: Wrapper) {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('com.google.guava:guava:18.0')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -43,11 +44,3 @@ dependencies {
 	testCompile('cglib:cglib:2.2.2')
 
 }
-
-
-//eclipse {
-//	classpath {
-//		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-//		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-//	}
-//}
