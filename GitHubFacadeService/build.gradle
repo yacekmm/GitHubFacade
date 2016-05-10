@@ -32,6 +32,7 @@ task wrapper(type: Wrapper) {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('com.google.guava:guava:18.0')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('junit:junit:4.11')
