@@ -1,7 +1,9 @@
 package com.looksok.controller;
 
-import com.looksok.service.RepoDetailsService;
+import com.looksok.service.repo.details.RepoDetailsService;
+import com.looksok.service.repo.details.RepoDetailsDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,7 +16,7 @@ public class RepoController {
         this.repoDetailsService = repoDetailsService;
     }
 
-    public void getRepoDetails(){
-        repoDetailsService.requestRepoDetails();
+    public ResponseEntity<RepoDetailsDto> getRepoDetails(String owner, String repoName){
+        return repoDetailsService.requestRepoDetails(owner, repoName);
     }
 }
