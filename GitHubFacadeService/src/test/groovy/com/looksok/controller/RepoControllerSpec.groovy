@@ -1,23 +1,26 @@
 package com.looksok.controller
 
+import com.looksok.service.RepoDetailsService
 import spock.lang.Specification
 
 class RepoControllerSpec extends Specification {
 
-    private def repoController
+    private RepoController repoController
+    private def repoDetailsService
 
     void setup() {
-        repoController = new RepoController()
+        repoDetailsService = Mock(RepoDetailsService)
+        repoController = new RepoController(repoDetailsService)
     }
 
-    def "testsConfig"(){
+    def "calls RepoService to get repo details"(){
         given:
 
 
         when:
-        def result = repoController.giveOne()
+        repoController.getRepoDetails()
 
         then:
-        result == 1
+        1 * repoDetailsService.requestRepoDetails()
     }
 }

@@ -16,4 +16,5 @@ public class GitHubFacadeServiceApplicationTests {
 	public void contextLoads() {
 	}
 
+	//TODO JM: check RepoService Component loaded
 }
