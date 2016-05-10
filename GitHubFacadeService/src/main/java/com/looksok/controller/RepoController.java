@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,10 @@ public class RepoController {
         this.repoDetailsService = repoDetailsService;
     }
 
-    @RequestMapping(value="/repositories", method= RequestMethod.GET)
-    public ResponseEntity<RepoDetailsDto> getRepoDetails(String owner, String repoName){
+    @RequestMapping(value="/repositories/{owner}/{repository-name}", method= RequestMethod.GET)
+    public ResponseEntity<RepoDetailsDto> getRepoDetails(
+            @PathVariable(value="owner") String owner,
+            @PathVariable(value="repository-name") String repoName){
         if(Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)){
             log.info("BadRequest: params must not be null or empty");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -27,7 +27,9 @@ public class RepoDetailsService {
                 .path(repoName)
                 .build(true).toUri();
 
-        restTemplatePrototype.getRestTemplate().getForObject(targetUrl, String.class);
+        String result = restTemplatePrototype.getRestTemplate().getForObject(targetUrl, String.class);
+        System.out.println("RESULT::::::");
+        System.out.println(result);
         return Optional.empty();
     }
 
