@@ -12,7 +12,8 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
+apply plugin: 'groovy'
 
 jar {
 	baseName = 'github-facade-service'
@@ -25,11 +26,21 @@ repositories {
 	mavenCentral()
 }
 
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.7'
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 
-	testCompile('org.springframework.boot:spring-boot-starter-test') 
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('junit:junit:4.11')
+	testCompile('org.mockito:mockito-all:1.9.5')
+
+	testCompile('org.codehaus.groovy:groovy:2.4.5')
+	testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
+	testCompile('cglib:cglib:2.2.2')
+
 }
 
 
