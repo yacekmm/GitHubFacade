@@ -1,7 +1,7 @@
 package com.looksok.controller
 
-import com.looksok.service.repo.details.RepoDetailsService
 import com.looksok.service.repo.details.RepoDetailsDto
+import com.looksok.service.repo.details.RepoDetailsService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
@@ -25,14 +25,26 @@ class RepoControllerSpec extends Specification {
         repoController.getRepoDetails(expectedOwner, expectedRepo)
 
         then:
-        1 * repoDetailsServiceMock.requestRepoDetails(expectedOwner, expectedRepo)
+        1 * repoDetailsServiceMock.requestRepoDetails(expectedOwner, expectedRepo) >> Optional.empty()
+    }
+
+    def "returns 500 on unknown response from repoService"(){
+        given:
+        def serviceResult = Optional.empty()
+        repoDetailsServiceMock.requestRepoDetails(*_) >> serviceResult
+
+        when:
+        def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
+
+        then:
+        actualResponseEntity.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR
     }
 
     def "returns ResponseEntity from repoService"(){
         given:
         RepoDetailsDto expectedRepoDetailsMock = Mock()
-        def expectedResponseEntity = new ResponseEntity<RepoDetailsDto>(expectedRepoDetailsMock, HttpStatus.OK)
-        repoDetailsServiceMock.requestRepoDetails(*_) >> expectedResponseEntity
+        def expectedserviceResponse = Optional.of(new ResponseEntity<RepoDetailsDto>(expectedRepoDetailsMock, HttpStatus.OK))
+        repoDetailsServiceMock.requestRepoDetails(*_) >> expectedserviceResponse
 
         when:
         def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")

@@ -4,10 +4,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Optional;
+
 @Component
 public class RepoDetailsService {
 
-    public ResponseEntity<RepoDetailsDto> requestRepoDetails(String ownerUsername, String repoName){
+    public Optional<ResponseEntity<RepoDetailsDto>> requestRepoDetails(String ownerUsername, String repoName){
         throw new NotImplementedException();
     }
 

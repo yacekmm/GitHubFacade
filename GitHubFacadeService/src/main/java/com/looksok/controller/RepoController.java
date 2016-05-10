@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 
 @RestController
 public class RepoController {
@@ -29,6 +30,11 @@ public class RepoController {
             log.info("BadRequest: params must not be null or empty");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return repoDetailsService.requestRepoDetails(owner, repoName);
+        Optional<ResponseEntity<RepoDetailsDto>> result = repoDetailsService.requestRepoDetails(owner, repoName);
+        if(result.isPresent()) {
+            return result.get();
+        }else{
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
