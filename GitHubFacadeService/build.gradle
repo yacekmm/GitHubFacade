@@ -30,17 +30,55 @@ task wrapper(type: Wrapper) {
 	gradleVersion = '2.7'
 }
 
+test{
+    beforeTest { descriptor ->
+        logger.lifecycle("Running unit test: " + descriptor)
+    }
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir file('src/integration-test/java')
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running integration test: " + descriptor)
+    }
+}
+
+//check.dependsOn integTest
+
+
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('com.google.guava:guava:18.0')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework:spring-test')
 	testCompile('junit:junit:4.11')
 	testCompile('org.mockito:mockito-all:1.9.5')
 
 	testCompile('org.codehaus.groovy:groovy:2.4.5')
 	testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
 	testCompile('cglib:cglib:2.2.2')
+    testCompile('com.jayway.restassured:rest-assured:2.9.0')
 
+    //integration tests dependencies
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.testCompile
+    integrationTestCompile sourceSets.test.output
+    integrationTestRuntime configurations.testRuntime
 }
+
+
