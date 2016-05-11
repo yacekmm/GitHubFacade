@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.TimeZone;
 
-public class RepoDetails {
+public class RepoDetailsModel {
 
     private String fullName;
     private String description;
@@ -14,13 +14,13 @@ public class RepoDetails {
     private int stars;
     private ZonedDateTime createdAt;
 
-    public static RepoDetails fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
+    public static RepoDetailsModel fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
         Instant instant = Instant.parse(gitHubModel.getCreated_at());
-        return new RepoDetails(gitHubModel.getFull_name(), gitHubModel.getDescription(),
+        return new RepoDetailsModel(gitHubModel.getFull_name(), gitHubModel.getDescription(),
                 gitHubModel.getClone_url(), gitHubModel.getStargazers_count(), ZonedDateTime.ofInstant(instant, TimeZone.getDefault().toZoneId()));
     }
 
-    private RepoDetails(String fullName, String description, String cloneUrl, int stars, ZonedDateTime createdAt) {
+    private RepoDetailsModel(String fullName, String description, String cloneUrl, int stars, ZonedDateTime createdAt) {
         this.fullName = fullName;
         this.description = description;
         this.cloneUrl = cloneUrl;
@@ -50,7 +50,7 @@ public class RepoDetails {
 
     @Override
     public String toString() {
-        return "RepoDetails{" +
+        return "RepoDetailsModel{" +
                 "fullName='" + fullName + '\'' +
                 ", description='" + description + '\'' +
                 ", cloneUri='" + cloneUrl + '\'' +
@@ -64,7 +64,7 @@ public class RepoDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RepoDetails that = (RepoDetails) o;
+        RepoDetailsModel that = (RepoDetailsModel) o;
 
         if (stars != that.stars) return false;
         if (fullName != null ? !fullName.equals(that.fullName) : that.fullName != null) return false;

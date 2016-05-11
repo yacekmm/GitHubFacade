@@ -20,7 +20,7 @@ class RepoDetailsSpec extends Specification {
         gitHubModel.getClone_url() >> expectedCloneUri
 
         when:
-        def result = RepoDetails.fromGitHubModel(gitHubModel)
+        def result = RepoDetailsModel.fromGitHubModel(gitHubModel)
 
         then:
         result.getCreatedAt() == "2016-04-05 18:39:50"

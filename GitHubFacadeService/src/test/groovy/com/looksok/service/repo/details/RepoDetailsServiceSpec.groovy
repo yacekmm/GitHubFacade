@@ -1,8 +1,9 @@
 package com.looksok.service.repo.details
 
 import com.looksok.constants.ConstAppLogic
+import com.looksok.service.repo.details.exception.RepoNotFoundException
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple
-import com.looksok.service.repo.details.model.RepoDetails
+import com.looksok.service.repo.details.model.RepoDetailsModel
 import com.looksok.service.rest.RestTemplatePrototype
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -60,7 +61,7 @@ class RepoDetailsServiceSpec extends Specification {
 
         then:
         repoDetails.isPresent()
-        repoDetails.get() == RepoDetails.fromGitHubModel(gitHubModelMock)
+        repoDetails.get() == RepoDetailsModel.fromGitHubModel(gitHubModelMock)
     }
 
     def "RequestRepoDetails returns empty optional on RestClientException"() {

@@ -1,4 +1,4 @@
-package com.looksok.service.repo.details;
+package com.looksok.service.repo.details.exception;
 
 public class RepoNotFoundException extends RuntimeException {
 

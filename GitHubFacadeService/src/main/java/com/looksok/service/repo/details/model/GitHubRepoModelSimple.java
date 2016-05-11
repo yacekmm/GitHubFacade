@@ -30,7 +30,7 @@ public class GitHubRepoModelSimple {
 
     @Override
     public String toString() {
-        return "RepoDetails{" +
+        return "RepoDetailsModel{" +
                 "fullName='" + full_name + '\'' +
                 ", description='" + description + '\'' +
                 ", cloneUri='" + clone_url + '\'' +

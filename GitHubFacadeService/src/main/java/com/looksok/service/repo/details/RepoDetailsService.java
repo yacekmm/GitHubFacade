@@ -1,8 +1,9 @@
 package com.looksok.service.repo.details;
 
 import com.looksok.constants.ConstAppLogic;
+import com.looksok.service.repo.details.exception.RepoNotFoundException;
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple;
-import com.looksok.service.repo.details.model.RepoDetails;
+import com.looksok.service.repo.details.model.RepoDetailsModel;
 import com.looksok.service.rest.RestTemplatePrototype;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,14 @@ public class RepoDetailsService {
      * @throws RepoNotFoundException when user/repo pair does not exist
      * @throws IllegalArgumentException owner / repo params are invalid on request url creation
      */
-    public Optional<RepoDetails> requestRepoDetails(String ownerUsername, String repoName) {
+    public Optional<RepoDetailsModel> requestRepoDetails(String ownerUsername, String repoName) {
 
 
         try {
             ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
                     .exchange(buildTargetUrl(ownerUsername, repoName), HttpMethod.GET, buildHttpEntity(), GitHubRepoModelSimple.class);
             log.info("Received repo details: " + result);
-            return Optional.of(RepoDetails.fromGitHubModel(result.getBody()));
+            return Optional.of(RepoDetailsModel.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 log.info("Repo for user [" + ownerUsername + "] repoName [" + repoName + "] was not found");
