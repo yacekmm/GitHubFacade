@@ -28,7 +28,7 @@ public class GitHubFacadeServiceIntegrationTest {
     }
 
     @Test
-    public void okReponseOnSampleRepo() {
+    public void okResponseOnSampleRepo() {
         RestAssured
             .when()
                 .get("/repositories/yacekmm/IDEConfig")
@@ -36,6 +36,15 @@ public class GitHubFacadeServiceIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("fullName", equalTo("yacekmm/IDEConfig"))
                 .body("cloneUrl", equalTo("https://github.com/yacekmm/IDEConfig.git"));
+    }
+
+    @Test
+    public void notFoundResponseOnNotExistingRepo() {
+        RestAssured
+            .when()
+                .get("/repositories/yacekmm/iWillNeverCreateSuchRepo")
+            .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
 }
