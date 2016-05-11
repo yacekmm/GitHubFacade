@@ -1,5 +1,8 @@
 package com.looksok.service.repo.details.model;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class RepoDetails {
 
     private String fullName;
@@ -9,8 +12,11 @@ public class RepoDetails {
     private String createdAt;
 
     public static RepoDetails fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
+        System.out.println(gitHubModel.getCreated_at());
+        ZonedDateTime parsedDate = ZonedDateTime.parse(gitHubModel.getCreated_at(), DateTimeFormatter.ISO_DATE_TIME);
+        System.out.println("parsedDate: " + parsedDate);
         return new RepoDetails(gitHubModel.getFull_name(), gitHubModel.getDescription(),
-                gitHubModel.getClone_url(), gitHubModel.getStars(), gitHubModel.getCreated_at());
+                gitHubModel.getClone_url(), gitHubModel.getStars(), parsedDate.toString());
     }
 
     private RepoDetails(String fullName, String description, String cloneUrl, int stars, String createdAt) {

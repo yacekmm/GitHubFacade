@@ -7,7 +7,7 @@ class RepoDetailsSpec extends Specification {
     def "FromGitHubModel returns constructed RepoDetails"() {
         given:
         String expectedCloneUri = "expectedCloneUri"
-        String expectedCreatedAt = "creationDateString"
+        String expectedCreatedAt = "2016-04-05T16:39:50Z"
         String expectedDescription = "someDescription"
         String expectedFullName = "fullName"
         Number expectedStarsCount = 13
