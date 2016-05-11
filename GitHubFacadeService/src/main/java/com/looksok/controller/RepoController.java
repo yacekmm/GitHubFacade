@@ -19,21 +19,21 @@ import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 
 @RestController
-public class RepoController {
+public final class RepoController {
 
     private RepoDetailsService repoDetailsService;
 
     private Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
-    public RepoController(RepoDetailsService repoDetailsService) {
+    public RepoController(final RepoDetailsService repoDetailsService) {
         this.repoDetailsService = repoDetailsService;
     }
 
     @RequestMapping(value = "/repositories/{owner}/{repository-name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RepoDetailsModel> getRepoDetails(
-            @PathVariable(value = "owner") String owner,
-            @PathVariable(value = "repository-name") String repoName) {
+            @PathVariable(value = "owner") final String owner,
+            @PathVariable(value = "repository-name") final String repoName) {
 
         if (Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)) {
             log.info("BadRequest: params must not be null or empty");

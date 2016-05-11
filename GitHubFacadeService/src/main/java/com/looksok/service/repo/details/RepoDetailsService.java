@@ -27,7 +27,7 @@ public class RepoDetailsService {
     private Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
-    public RepoDetailsService(RestTemplatePrototype restTemplatePrototype) {
+    public RepoDetailsService(final RestTemplatePrototype restTemplatePrototype) {
         this.restTemplatePrototype = restTemplatePrototype;
     }
 

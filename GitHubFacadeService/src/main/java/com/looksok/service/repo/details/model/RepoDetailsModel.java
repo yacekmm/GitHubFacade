@@ -14,7 +14,7 @@ public class RepoDetailsModel {
     private int stars;
     private ZonedDateTime createdAt;
 
-    public static RepoDetailsModel fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
+    public static RepoDetailsModel fromGitHubModel(final GitHubRepoModelSimple gitHubModel) {
         Instant instant = Instant.parse(gitHubModel.getCreated_at());
         return new RepoDetailsModel(gitHubModel.getFull_name(), gitHubModel.getDescription(),
                 gitHubModel.getClone_url(), gitHubModel.getStargazers_count(), ZonedDateTime.ofInstant(instant, TimeZone.getDefault().toZoneId()));
