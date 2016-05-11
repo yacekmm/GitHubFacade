@@ -51,11 +51,11 @@ public class RepoDetailsService {
                 log.info("Repo for user [" + ownerUsername + "] repoName [" + repoName + "] was not found");
                 throw new RepoNotFoundException(e.getMessage());
             }else{
-                log.info("Http Client exception occured. Returning empty result");
+                log.info("Http Client exception occurred. Returning empty result");
                 return Optional.empty();
             }
         } catch(RestClientException e){
-            log.info("Client exception occured. Returning empty result");
+            log.info("Client exception occurred. Returning empty result");
             return Optional.empty();
         }
     }

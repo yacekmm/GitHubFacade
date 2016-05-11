@@ -1,0 +1,24 @@
+<configuration>
+
+	<property scope="context" name="serviceName" value="GitHubFacade" />
+
+	<property scope="context" name="logPath" value="/ipcm/logs" />
+	<property scope="context" name="date" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}]" />
+	<property scope="context" name="level" value="%-5level" />
+	<property scope="context" name="service" value="[${serviceName}-%thread]" />
+	<property scope="context" name="location" value="%logger{42}[%line]:" />
+	<property scope="context" name="message" value="%replace(%msg){'[\t\n\r]', '_'}%n" />
+
+	<!--Console log INFO appender -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%gray(${date}) %highlight(${level}) %green(${service}) %magenta(${location}) ${message}</pattern>
+		</encoder>
+	</appender>
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

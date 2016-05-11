@@ -51,8 +51,8 @@ public class RepoController {
         if(result.isPresent()) {
             return new ResponseEntity<>(result.get(), HttpStatus.OK);
         }else{
-            log.error("Error getting repo details");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error getting repo details. GitHub unavailable");
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 }
