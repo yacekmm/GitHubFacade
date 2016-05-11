@@ -41,11 +41,9 @@ public class RepoDetailsService {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(ConstAppLogic.GitHub.HEADER_ACCEPT_V3));
-            HttpEntity<Void> entity = new HttpEntity<>(null, headers);
 
             ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
-                    .exchange(targetUrl, HttpMethod.GET, entity, GitHubRepoModelSimple.class);
-//                    .getForEntity(targetUrl, GitHubRepoModelSimple.class);
+                    .exchange(targetUrl, HttpMethod.GET, new HttpEntity<Void>(null, headers), GitHubRepoModelSimple.class);
             log.info("Received repo details: " + result);
             return Optional.of(RepoDetails.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {
