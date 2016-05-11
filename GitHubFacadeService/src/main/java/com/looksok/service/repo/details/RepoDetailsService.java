@@ -3,8 +3,10 @@ package com.looksok.service.repo.details;
 import com.looksok.constants.ConstAppLogic;
 import com.looksok.service.rest.RestTemplatePrototype;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -37,8 +39,14 @@ public class RepoDetailsService {
             ResponseEntity<RepoDetailsDto> result = restTemplatePrototype.getRestTemplate().getForEntity(targetUrl, RepoDetailsDto.class);
             System.out.println("RESULT: " + result);
             return Optional.of(result);
-        }catch(RestClientException e){
-            throw new RepoNotFoundException(e.getMessage());
+        } catch (HttpClientErrorException e) {
+            if(e.getStatusCode() == HttpStatus.NOT_FOUND){
+                throw new RepoNotFoundException(e.getMessage());
+            }else{
+                return Optional.empty();
+            }
+        } catch(RestClientException e){
+            return Optional.empty();
         }
     }
 
