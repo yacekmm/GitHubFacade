@@ -4,6 +4,7 @@ import com.looksok.constants.ConstAppLogic
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple
 import com.looksok.service.repo.details.model.RepoDetails
 import com.looksok.service.rest.RestTemplatePrototype
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.HttpClientErrorException
@@ -29,15 +30,16 @@ class RepoDetailsServiceSpec extends Specification {
         given:
         String expectedUser = "user"
         String expectedRepo = "repo"
-        def expectedUri = new URI(ConstAppLogic.GitHubUrl.REPOS + expectedUser + "/" + expectedRepo)
+        def expectedUri = new URI(ConstAppLogic.GitHub.URL_REPOS + expectedUser + "/" + expectedRepo)
 
         when:
         repoDetailsService.requestRepoDetails(expectedUser, expectedRepo)
 
         then:
         1 * restTemplatePrototypeMock.getRestTemplate() >> restTemplateMock
-        1 * restTemplateMock.getForEntity(_, _) >> {actualUrl, type ->
+        1 * restTemplateMock.exchange(_, _, _, _) >> {actualUrl, method, entity, responseType ->
             assert actualUrl == expectedUri
+            assert method == HttpMethod.GET
             new ResponseEntity<GitHubRepoModelSimple>(Mock(GitHubRepoModelSimple), HttpStatus.OK)
         }
     }
@@ -47,7 +49,7 @@ class RepoDetailsServiceSpec extends Specification {
         def responseEntityMock = Mock(ResponseEntity)
         def gitHubModelMock = Mock(GitHubRepoModelSimple)
         responseEntityMock.getBody() >> gitHubModelMock;
-        restTemplateMock.getForEntity(_, GitHubRepoModelSimple.class) >> responseEntityMock
+        restTemplateMock.exchange(_, _, _, GitHubRepoModelSimple.class) >> responseEntityMock
 
         when:
         def repoDetails = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
@@ -57,22 +59,9 @@ class RepoDetailsServiceSpec extends Specification {
         repoDetails.get() == RepoDetails.fromGitHubModel(gitHubModelMock)
     }
 
-
-//    def "RequestRepoDetails returns 503 response on unknown host exception"() {
-//        given:
-//        restTemplateMock.getForEntity(_, _) >> { throw new UnknownHostException() }
-//
-//        when:
-//        def repoDetails = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
-//
-//        then:
-//        repoDetails.isPresent()
-//        repoDetails.get() == new ResponseEntity(HttpStatus.SERVICE_UNAVAILABLE)
-//    }
-
     def "RequestRepoDetails returns empty optional on RestClientException"() {
         given:
-        restTemplateMock.getForEntity(_, _) >> { throw new RestClientException("msg") }
+        restTemplateMock.exchange(*_) >> { throw new RestClientException("msg") }
 
         when:
         def result = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
@@ -83,7 +72,7 @@ class RepoDetailsServiceSpec extends Specification {
 
     def "RequestRepoDetails throws RepoNotFoundException on unknown user/repo pair"() {
         given:
-        restTemplateMock.getForEntity(_, _) >> { throw new HttpClientErrorException(HttpStatus.NOT_FOUND) }
+        restTemplateMock.exchange(*_) >> { throw new HttpClientErrorException(HttpStatus.NOT_FOUND) }
 
         when:
         repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
@@ -94,7 +83,7 @@ class RepoDetailsServiceSpec extends Specification {
 
     def "RequestRepoDetails returns empty result on other error"() {
         given:
-        restTemplateMock.getForEntity(_, _) >> { throw new HttpClientErrorException(HttpStatus.CONFLICT) }
+        restTemplateMock.exchange(*_) >> { throw new HttpClientErrorException(HttpStatus.CONFLICT) }
 
         when:
         def result = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")

@@ -7,8 +7,7 @@ import com.looksok.service.rest.RestTemplatePrototype;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
@@ -16,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Component
@@ -35,12 +35,17 @@ public class RepoDetailsService {
      */
     public Optional<RepoDetails> requestRepoDetails(String ownerUsername, String repoName) {
 
-        URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHubUrl.REPOS)
+        URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHub.URL_REPOS)
                 .path(ownerUsername).path("/").path(repoName).build(true).toUri();
 
         try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(ConstAppLogic.GitHub.HEADER_ACCEPT_V3));
+            HttpEntity<Void> entity = new HttpEntity<>(null, headers);
+
             ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
-                    .getForEntity(targetUrl, GitHubRepoModelSimple.class);
+                    .exchange(targetUrl, HttpMethod.GET, entity, GitHubRepoModelSimple.class);
+//                    .getForEntity(targetUrl, GitHubRepoModelSimple.class);
             log.info("Received repo details: " + result);
             return Optional.of(RepoDetails.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {
