@@ -13,11 +13,11 @@ class RepoDetailsSpec extends Specification {
         Number expectedStarsCount = 13
 
         GitHubRepoModelSimple gitHubModel = Mock()
-        gitHubModel.getCreatedAt() >> expectedCreatedAt
+        gitHubModel.getCreated_at() >> expectedCreatedAt
         gitHubModel.getDescription() >> expectedDescription
-        gitHubModel.getFullName() >> expectedFullName
+        gitHubModel.getFull_name() >> expectedFullName
         gitHubModel.getStars() >> expectedStarsCount
-        gitHubModel.getCloneUri() >> expectedCloneUri
+        gitHubModel.getClone_url() >> expectedCloneUri
 
         when:
         def result = RepoDetails.fromGitHubModel(gitHubModel)

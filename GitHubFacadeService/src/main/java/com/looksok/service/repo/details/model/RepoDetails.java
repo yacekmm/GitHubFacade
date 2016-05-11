@@ -14,8 +14,8 @@ public class RepoDetails {
 //    }
 
     public static RepoDetails fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
-        return new RepoDetails(gitHubModel.getFullName(), gitHubModel.getDescription(),
-                gitHubModel.getCloneUri(), gitHubModel.getStars(), gitHubModel.getCreatedAt());
+        return new RepoDetails(gitHubModel.getFull_name(), gitHubModel.getDescription(),
+                gitHubModel.getClone_url(), gitHubModel.getStars(), gitHubModel.getCreated_at());
     }
 
     private RepoDetails(String fullName, String description, String cloneUri, int stars, String createdAt) {

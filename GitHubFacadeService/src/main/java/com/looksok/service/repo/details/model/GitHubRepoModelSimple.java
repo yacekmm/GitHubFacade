@@ -2,45 +2,45 @@ package com.looksok.service.repo.details.model;
 
 public class GitHubRepoModelSimple {
 
-    private String fullName;
+    private String full_name;
     private String description;
-    private String cloneUri;
+    private String clone_url;
     private int stars;
-    private String createdAt;
+    private String created_at;
 
     @SuppressWarnings("unused")
     public GitHubRepoModelSimple() {
         //used for Spring parser only
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFull_name() {
+        return full_name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getCloneUri() {
-        return cloneUri;
+    public String getClone_url() {
+        return clone_url;
     }
 
     public int getStars() {
         return stars;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreated_at() {
+        return created_at;
     }
 
     @Override
     public String toString() {
         return "RepoDetails{" +
-                "fullName='" + fullName + '\'' +
+                "fullName='" + full_name + '\'' +
                 ", description='" + description + '\'' +
-                ", cloneUri='" + cloneUri + '\'' +
+                ", cloneUri='" + clone_url + '\'' +
                 ", stars='" + stars + '\'' +
-                ", createdAt='" + createdAt + '\'' +
+                ", createdAt='" + created_at + '\'' +
                 '}';
     }
 }
