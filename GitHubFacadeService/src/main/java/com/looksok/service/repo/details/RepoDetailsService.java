@@ -22,7 +22,11 @@ public class RepoDetailsService {
     }
 
 
+    /**
+     * @throws RepoNotFoundException when user/repo pair does not exist
+     */
     public Optional<ResponseEntity<RepoDetailsDto>> requestRepoDetails(String ownerUsername, String repoName){
+
         URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHubUrl.REPOS)
                 .path(ownerUsername)
                 .path("/")
@@ -31,7 +35,7 @@ public class RepoDetailsService {
 
         try{
             ResponseEntity<RepoDetailsDto> result = restTemplatePrototype.getRestTemplate().getForEntity(targetUrl, RepoDetailsDto.class);
-            System.out.println("RESULT::::::" + result);
+            System.out.println("RESULT: " + result);
             return Optional.of(result);
         }catch(RestClientException e){
             throw new RepoNotFoundException(e.getMessage());

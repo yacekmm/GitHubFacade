@@ -3,6 +3,7 @@ package com.looksok.controller;
 import com.google.common.base.Strings;
 import com.looksok.service.repo.details.RepoDetailsDto;
 import com.looksok.service.repo.details.RepoDetailsService;
+import com.looksok.service.repo.details.RepoNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,14 @@ public class RepoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Optional<ResponseEntity<RepoDetailsDto>> result = repoDetailsService.requestRepoDetails(owner, repoName);
+        Optional<ResponseEntity<RepoDetailsDto>> result = Optional.empty();
+
+        try{
+            result = repoDetailsService.requestRepoDetails(owner, repoName);
+        }catch (RepoNotFoundException e){
+            log.info("Requested repository was not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         if(result.isPresent()) {
             return result.get();

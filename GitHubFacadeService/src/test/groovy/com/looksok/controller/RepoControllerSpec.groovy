@@ -2,6 +2,7 @@ package com.looksok.controller
 
 import com.looksok.service.repo.details.RepoDetailsDto
 import com.looksok.service.repo.details.RepoDetailsService
+import com.looksok.service.repo.details.RepoNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
@@ -52,6 +53,17 @@ class RepoControllerSpec extends Specification {
         then:
         actualResponseEntity.getStatusCode() == HttpStatus.OK
         actualResponseEntity.getBody() == expectedRepoDetailsMock
+    }
+
+    def "handles RepoNotFound returning 404"(){
+        given:
+        repoDetailsServiceMock.requestRepoDetails(*_) >> {throw new RepoNotFoundException("msg") }
+
+        when:
+        def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
+
+        then:
+        actualResponseEntity.getStatusCode() == HttpStatus.NOT_FOUND
     }
 
     def "returns BadRequest on invalid params"(){

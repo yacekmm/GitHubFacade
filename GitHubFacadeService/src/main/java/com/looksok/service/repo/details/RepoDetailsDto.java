@@ -5,7 +5,7 @@ public class RepoDetailsDto {
     private String fullName;
     private String description;
     private String cloneUri;
-    private String stars;
+    private int stars;
     private String createdAt;
 
     @SuppressWarnings("unused")
@@ -25,7 +25,7 @@ public class RepoDetailsDto {
         return cloneUri;
     }
 
-    public String getStars() {
+    public int getStars() {
         return stars;
     }
 
