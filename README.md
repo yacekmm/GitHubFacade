@@ -1,10 +1,12 @@
 # README #
-GitHubFacade Service aiming to retrieve user's repo summary. Service is based on a Spring Boot.
+GitHubFacade Service aiming to retrieve user's repo summary. Service is based on a Spring Boot, producing Uber-jar with Apache Tomcat embedded..
 
 ## Summary of set up ##
 Gradle is used as a build tool. Use gradle wrapper to make sure that build tool is consistent across environment
 
 ## Running the service ##
+
+### With gradle task ###
 Execute 
 
 ```
@@ -14,6 +16,22 @@ gradlew clean build run
 ```
  
 task to run the application.
+
+### With java command ###
+Alternatively you can first build jar with 
+
+```
+#!shell
+
+gradlew clean build
+```
+This will produce jar file to /build/libs directory. You can run it with:
+
+```
+#!shell
+
+java -jar build/libs/github-facade-service-1.0.0.jar
+```
 
 ## Application url ##
 Head over to
@@ -25,12 +43,12 @@ where user-name and repo-name are parameters of repo you want to check. For exam
 Unit and integration tests are implemented. 
 
 ### Unit tests ###
-Unit tests are a part of build process. They can be executed with:
+Unit tests are a part of build process and are executed with build:
 
 ```
 #!shell
 
-gradlew test
+gradlew clean build
 ```
 
 ### Integration tests ###
