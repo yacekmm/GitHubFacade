@@ -1,9 +1,9 @@
 # README #
 GitHubFacade Servcie aiming to retrieve user's repo summary.
 
-### Setting up ###
+## Setting up ##
 
-* Summary of set up
+### Summary of set up ###
 Gradle is used as a build tool. Use gradle wrapper to make sure that build tool is consistent across environment
 * Running the service
 Execute 
