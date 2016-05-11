@@ -23,7 +23,7 @@ class RepoDetailsSpec extends Specification {
         def result = RepoDetails.fromGitHubModel(gitHubModel)
 
         then:
-        result.getCreatedAt() == expectedCreatedAt
+        result.getCreatedAt() == "2016-04-05 18:39:50"
         result.getDescription() == expectedDescription
         result.getFullName() == expectedFullName
         result.getStars() == expectedStarsCount

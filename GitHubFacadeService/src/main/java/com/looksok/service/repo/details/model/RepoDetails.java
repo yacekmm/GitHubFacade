@@ -1,7 +1,10 @@
 package com.looksok.service.repo.details.model;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.TimeZone;
 
 public class RepoDetails {
 
@@ -9,17 +12,15 @@ public class RepoDetails {
     private String description;
     private String cloneUrl;
     private int stars;
-    private String createdAt;
+    private ZonedDateTime createdAt;
 
     public static RepoDetails fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
-        System.out.println(gitHubModel.getCreated_at());
-        ZonedDateTime parsedDate = ZonedDateTime.parse(gitHubModel.getCreated_at(), DateTimeFormatter.ISO_DATE_TIME);
-        System.out.println("parsedDate: " + parsedDate);
+        Instant instant = Instant.parse(gitHubModel.getCreated_at());
         return new RepoDetails(gitHubModel.getFull_name(), gitHubModel.getDescription(),
-                gitHubModel.getClone_url(), gitHubModel.getStars(), parsedDate.toString());
+                gitHubModel.getClone_url(), gitHubModel.getStars(), ZonedDateTime.ofInstant(instant, TimeZone.getDefault().toZoneId()));
     }
 
-    private RepoDetails(String fullName, String description, String cloneUrl, int stars, String createdAt) {
+    private RepoDetails(String fullName, String description, String cloneUrl, int stars, ZonedDateTime createdAt) {
         this.fullName = fullName;
         this.description = description;
         this.cloneUrl = cloneUrl;
@@ -44,7 +45,7 @@ public class RepoDetails {
     }
 
     public String getCreatedAt() {
-        return createdAt;
+        return createdAt.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
     }
 
     @Override
