@@ -1,6 +1,8 @@
 package com.looksok.service.repo.details
 
 import com.looksok.constants.ConstAppLogic
+import com.looksok.service.repo.details.model.GitHubRepoModelSimple
+import com.looksok.service.repo.details.model.RepoDetails
 import com.looksok.service.rest.RestTemplatePrototype
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -36,21 +38,23 @@ class RepoDetailsServiceSpec extends Specification {
         1 * restTemplatePrototypeMock.getRestTemplate() >> restTemplateMock
         1 * restTemplateMock.getForEntity(_, _) >> {actualUrl, type ->
             assert actualUrl == expectedUri
-            new ResponseEntity<RepoDetailsDto>(HttpStatus.OK)
+            new ResponseEntity<GitHubRepoModelSimple>(Mock(GitHubRepoModelSimple), HttpStatus.OK)
         }
     }
 
     def "RequestRepoDetails returns result as a parsed object"() {
         given:
         def responseEntityMock = Mock(ResponseEntity)
-        restTemplateMock.getForEntity(_, RepoDetailsDto.class) >> responseEntityMock
+        def gitHubModelMock = Mock(GitHubRepoModelSimple)
+        responseEntityMock.getBody() >> gitHubModelMock;
+        restTemplateMock.getForEntity(_, GitHubRepoModelSimple.class) >> responseEntityMock
 
         when:
         def repoDetails = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
 
         then:
         repoDetails.isPresent()
-        repoDetails.get() == responseEntityMock
+        repoDetails.get() == RepoDetails.fromGitHubModel(gitHubModelMock)
     }
 
 

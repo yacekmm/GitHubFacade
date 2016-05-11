@@ -1,9 +1,9 @@
 package com.looksok.controller;
 
 import com.google.common.base.Strings;
-import com.looksok.service.repo.details.RepoDetailsDto;
 import com.looksok.service.repo.details.RepoDetailsService;
 import com.looksok.service.repo.details.RepoNotFoundException;
+import com.looksok.service.repo.details.model.RepoDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class RepoController {
     }
 
     @RequestMapping(value="/repositories/{owner}/{repository-name}", method= RequestMethod.GET)
-    public ResponseEntity<RepoDetailsDto> getRepoDetails(
+    public ResponseEntity<RepoDetails> getRepoDetails(
             @PathVariable(value="owner") String owner,
             @PathVariable(value="repository-name") String repoName){
 
@@ -39,7 +39,7 @@ public class RepoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Optional<ResponseEntity<RepoDetailsDto>> result = Optional.empty();
+        Optional<RepoDetails> result;
 
         try{
             result = repoDetailsService.requestRepoDetails(owner, repoName);
@@ -49,7 +49,7 @@ public class RepoController {
         }
 
         if(result.isPresent()) {
-            return result.get();
+            return new ResponseEntity<>(result.get(), HttpStatus.OK);
         }else{
             log.error("Error getting repo details");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
