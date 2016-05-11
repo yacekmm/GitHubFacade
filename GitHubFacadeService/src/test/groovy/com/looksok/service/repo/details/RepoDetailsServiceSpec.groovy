@@ -40,7 +40,10 @@ class RepoDetailsServiceSpec extends Specification {
         1 * restTemplateMock.exchange(_, _, _, _) >> {actualUrl, method, entity, responseType ->
             assert actualUrl == expectedUri
             assert method == HttpMethod.GET
-            new ResponseEntity<GitHubRepoModelSimple>(Mock(GitHubRepoModelSimple), HttpStatus.OK)
+
+            def modelSimpleMock = Mock(GitHubRepoModelSimple)
+            modelSimpleMock.getCreated_at() >> "2016-04-05T16:39:50Z"
+            new ResponseEntity<GitHubRepoModelSimple>(modelSimpleMock, HttpStatus.OK)
         }
     }
 
@@ -49,6 +52,7 @@ class RepoDetailsServiceSpec extends Specification {
         def responseEntityMock = Mock(ResponseEntity)
         def gitHubModelMock = Mock(GitHubRepoModelSimple)
         responseEntityMock.getBody() >> gitHubModelMock;
+        gitHubModelMock.getCreated_at() >> "2016-04-05T16:39:50Z"
         restTemplateMock.exchange(_, _, _, GitHubRepoModelSimple.class) >> responseEntityMock
 
         when:
