@@ -32,11 +32,14 @@ public class RepoController {
     public ResponseEntity<RepoDetailsDto> getRepoDetails(
             @PathVariable(value="owner") String owner,
             @PathVariable(value="repository-name") String repoName){
+
         if(Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)){
             log.info("BadRequest: params must not be null or empty");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         Optional<ResponseEntity<RepoDetailsDto>> result = repoDetailsService.requestRepoDetails(owner, repoName);
+
         if(result.isPresent()) {
             return result.get();
         }else{

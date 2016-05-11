@@ -4,6 +4,7 @@ import com.looksok.constants.ConstAppLogic
 import com.looksok.service.rest.RestTemplatePrototype
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
@@ -52,16 +53,27 @@ class RepoDetailsServiceSpec extends Specification {
     }
 
 
-    def "RequestRepoDetails returns 503 response on unknown host exception"() {
+//    def "RequestRepoDetails returns 503 response on unknown host exception"() {
+//        given:
+//        restTemplateMock.getForEntity(_, _) >> { throw new UnknownHostException() }
+//
+//        when:
+//        def repoDetails = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
+//
+//        then:
+//        repoDetails.isPresent()
+//        repoDetails.get() == new ResponseEntity(HttpStatus.SERVICE_UNAVAILABLE)
+//    }
+
+    def "RequestRepoDetails throws RepoNotFoundException on unknown user/repo pair"() {
         given:
-        restTemplateMock.getForEntity(_, _) >> { throw new UnknownHostException() }
+        restTemplateMock.getForEntity(_, _) >> { throw new RestClientException("msg") }
 
         when:
-        def repoDetails = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
+        repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
 
         then:
-        repoDetails.isPresent()
-        repoDetails.get() == new ResponseEntity(HttpStatus.SERVICE_UNAVAILABLE)
+        RepoNotFoundException e = thrown()
     }
 
     //API response
