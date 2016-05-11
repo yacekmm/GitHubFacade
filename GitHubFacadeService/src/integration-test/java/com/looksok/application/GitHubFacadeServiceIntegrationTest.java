@@ -35,7 +35,8 @@ public class GitHubFacadeServiceIntegrationTest {
             .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("fullName", equalTo("yacekmm/IDEConfig"))
-                .body("cloneUrl", equalTo("https://github.com/yacekmm/IDEConfig.git"));
+                .body("cloneUrl", equalTo("https://github.com/yacekmm/IDEConfig.git"))
+                .body("createdAt", equalTo("2016-04-05 18:39:50"));
     }
 
     @Test
