@@ -7,7 +7,7 @@ class RepoDetailsSpec extends Specification {
     def "FromGitHubModel returns constructed RepoDetails"() {
         given:
         String expectedCloneUri = "expectedCloneUri"
-        String expectedCreatedAt = "creationDateString"
+        String expectedCreatedAt = "2016-04-05T16:39:50Z"
         String expectedDescription = "someDescription"
         String expectedFullName = "fullName"
         Number expectedStarsCount = 13
@@ -23,7 +23,7 @@ class RepoDetailsSpec extends Specification {
         def result = RepoDetails.fromGitHubModel(gitHubModel)
 
         then:
-        result.getCreatedAt() == expectedCreatedAt
+        result.getCreatedAt() == "2016-04-05 18:39:50"
         result.getDescription() == expectedDescription
         result.getFullName() == expectedFullName
         result.getStars() == expectedStarsCount
