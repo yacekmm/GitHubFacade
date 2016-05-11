@@ -1,5 +1,5 @@
 # README #
-GitHubFacade Service aiming to retrieve user's repo summary. Service is based on a Spring Boot, producing Uber-jar with Apache Tomcat embedded..
+GitHubFacade Service aiming to retrieve user's repo summary. Service is based on a Java 8 with Spring Boot, producing Uber-jar with Apache Tomcat embedded.
 
 ## Summary of set up ##
 Gradle is used as a build tool. Use gradle wrapper to make sure that build tool is consistent across environment
