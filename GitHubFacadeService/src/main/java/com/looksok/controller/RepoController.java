@@ -29,30 +29,29 @@ public class RepoController {
         this.repoDetailsService = repoDetailsService;
     }
 
-    @RequestMapping(value="/repositories/{owner}/{repository-name}", method= RequestMethod.GET)
+    @RequestMapping(value = "/repositories/{owner}/{repository-name}", method = RequestMethod.GET)
     public ResponseEntity<RepoDetails> getRepoDetails(
-            @PathVariable(value="owner") String owner,
-            @PathVariable(value="repository-name") String repoName){
+            @PathVariable(value = "owner") String owner,
+            @PathVariable(value = "repository-name") String repoName) {
 
-        if(Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)){
+        if (Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)) {
             log.info("BadRequest: params must not be null or empty");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Optional<RepoDetails> result;
+        try {
+            Optional<RepoDetails> result = repoDetailsService.requestRepoDetails(owner, repoName);
 
-        try{
-            result = repoDetailsService.requestRepoDetails(owner, repoName);
-        }catch (RepoNotFoundException e){
+            if (result.isPresent()) {
+                return new ResponseEntity<>(result.get(), HttpStatus.OK);
+            } else {
+                log.error("Error getting repo details. GitHub unavailable");
+                return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            }
+        } catch (RepoNotFoundException e) {
             log.info("Requested repository was not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if(result.isPresent()) {
-            return new ResponseEntity<>(result.get(), HttpStatus.OK);
-        }else{
-            log.error("Error getting repo details");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 }
