@@ -37,7 +37,7 @@ class RepoControllerSpec extends Specification {
         def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
 
         then:
-        actualResponseEntity.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR
+        actualResponseEntity.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE
     }
 
     def "returns ResponseEntity from repoService"(){
