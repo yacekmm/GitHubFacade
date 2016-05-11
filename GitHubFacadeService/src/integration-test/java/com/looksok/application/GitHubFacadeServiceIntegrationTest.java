@@ -26,15 +26,6 @@ public class GitHubFacadeServiceIntegrationTest {
     }
 
     @Test
-    public void badRequestOnNoParams() {
-        RestAssured.when()
-                .get("/repositories/")
-                .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-
-
-    @Test
     public void okReponseOnSampleRepo() {
         RestAssured.when()
                 .get("/repositories/yacekmm/IDEConfig")

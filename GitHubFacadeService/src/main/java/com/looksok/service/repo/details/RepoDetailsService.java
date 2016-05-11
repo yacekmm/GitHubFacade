@@ -27,10 +27,9 @@ public class RepoDetailsService {
                 .path(repoName)
                 .build(true).toUri();
 
-        String result = restTemplatePrototype.getRestTemplate().getForObject(targetUrl, String.class);
-        System.out.println("RESULT::::::");
-        System.out.println(result);
-        return Optional.empty();
+        ResponseEntity<RepoDetailsDto> result = restTemplatePrototype.getRestTemplate().getForEntity(targetUrl, RepoDetailsDto.class);
+        System.out.println("RESULT::::::" + result);
+        return Optional.of(result);
     }
 
 }
