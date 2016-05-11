@@ -1,10 +1,9 @@
 package com.looksok.controller
 
-import com.looksok.service.repo.details.RepoDetailsDto
 import com.looksok.service.repo.details.RepoDetailsService
 import com.looksok.service.repo.details.RepoNotFoundException
+import com.looksok.service.repo.details.model.RepoDetails
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
 class RepoControllerSpec extends Specification {
@@ -43,9 +42,10 @@ class RepoControllerSpec extends Specification {
 
     def "returns ResponseEntity from repoService"(){
         given:
-        RepoDetailsDto expectedRepoDetailsMock = Mock()
-        def expectedserviceResponse = Optional.of(new ResponseEntity<RepoDetailsDto>(expectedRepoDetailsMock, HttpStatus.OK))
-        repoDetailsServiceMock.requestRepoDetails(*_) >> expectedserviceResponse
+        RepoDetails expectedRepoDetailsMock = Mock()
+
+        def expectedServiceResponse = Optional.of(expectedRepoDetailsMock)
+        repoDetailsServiceMock.requestRepoDetails(*_) >> expectedServiceResponse
 
         when:
         def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")

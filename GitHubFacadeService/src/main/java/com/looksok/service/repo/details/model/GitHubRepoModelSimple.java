@@ -1,6 +1,6 @@
-package com.looksok.service.repo.details;
+package com.looksok.service.repo.details.model;
 
-public class RepoDetailsDto {
+public class GitHubRepoModelSimple {
 
     private String fullName;
     private String description;
@@ -9,7 +9,7 @@ public class RepoDetailsDto {
     private String createdAt;
 
     @SuppressWarnings("unused")
-    public RepoDetailsDto() {
+    public GitHubRepoModelSimple() {
         //used for Spring parser only
     }
 
@@ -35,7 +35,7 @@ public class RepoDetailsDto {
 
     @Override
     public String toString() {
-        return "RepoDetailsDto{" +
+        return "RepoDetails{" +
                 "fullName='" + fullName + '\'' +
                 ", description='" + description + '\'' +
                 ", cloneUri='" + cloneUri + '\'' +
