@@ -17,7 +17,7 @@ public class RepoDetails {
     public static RepoDetails fromGitHubModel(GitHubRepoModelSimple gitHubModel) {
         Instant instant = Instant.parse(gitHubModel.getCreated_at());
         return new RepoDetails(gitHubModel.getFull_name(), gitHubModel.getDescription(),
-                gitHubModel.getClone_url(), gitHubModel.getStars(), ZonedDateTime.ofInstant(instant, TimeZone.getDefault().toZoneId()));
+                gitHubModel.getClone_url(), gitHubModel.getStargazers_count(), ZonedDateTime.ofInstant(instant, TimeZone.getDefault().toZoneId()));
     }
 
     private RepoDetails(String fullName, String description, String cloneUrl, int stars, ZonedDateTime createdAt) {

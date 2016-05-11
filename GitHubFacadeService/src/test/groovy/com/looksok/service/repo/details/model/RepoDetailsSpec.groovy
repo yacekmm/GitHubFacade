@@ -16,7 +16,7 @@ class RepoDetailsSpec extends Specification {
         gitHubModel.getCreated_at() >> expectedCreatedAt
         gitHubModel.getDescription() >> expectedDescription
         gitHubModel.getFull_name() >> expectedFullName
-        gitHubModel.getStars() >> expectedStarsCount
+        gitHubModel.getStargazers_count() >> expectedStarsCount
         gitHubModel.getClone_url() >> expectedCloneUri
 
         when:

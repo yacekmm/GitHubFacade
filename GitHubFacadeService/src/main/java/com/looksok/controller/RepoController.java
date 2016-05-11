@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class RepoController {
         this.repoDetailsService = repoDetailsService;
     }
 
-    @RequestMapping(value = "/repositories/{owner}/{repository-name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/repositories/{owner}/{repository-name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RepoDetails> getRepoDetails(
             @PathVariable(value = "owner") String owner,
             @PathVariable(value = "repository-name") String repoName) {

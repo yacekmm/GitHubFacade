@@ -5,7 +5,7 @@ public class GitHubRepoModelSimple {
     private String full_name;
     private String description;
     private String clone_url;
-    private int stars;
+    private int stargazers_count;
     private String created_at;
 
     @SuppressWarnings("unused")
@@ -25,8 +25,8 @@ public class GitHubRepoModelSimple {
         return clone_url;
     }
 
-    public int getStars() {
-        return stars;
+    public int getStargazers_count() {
+        return stargazers_count;
     }
 
     public String getCreated_at() {
@@ -39,7 +39,7 @@ public class GitHubRepoModelSimple {
                 "fullName='" + full_name + '\'' +
                 ", description='" + description + '\'' +
                 ", cloneUri='" + clone_url + '\'' +
-                ", stars='" + stars + '\'' +
+                ", stars='" + stargazers_count + '\'' +
                 ", createdAt='" + created_at + '\'' +
                 '}';
     }
