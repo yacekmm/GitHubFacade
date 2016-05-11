@@ -18,7 +18,8 @@ task to run the application.
 ## Application url ##
 Head over to
 [http://127.0.0.1:8080/repositories/user-name/repo-name](http://127.0.0.1:8080/repositories/user-name/repo-name)
-where user-name and repo-name are parameters of repo you want to check.
+where user-name and repo-name are parameters of repo you want to check. For example:
+[http://127.0.0.1:8080/repositories/yacekmm/IDEConfig](http://127.0.0.1:8080/repositories/yacekmm/IDEConfig)
 
 ## Tests ##
 Unit and integration tests are implemented. 
