@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = GitHubFacadeServiceApplication.class)
 @WebAppConfiguration
@@ -27,10 +29,13 @@ public class GitHubFacadeServiceIntegrationTest {
 
     @Test
     public void okReponseOnSampleRepo() {
-        RestAssured.when()
+        RestAssured
+            .when()
                 .get("/repositories/yacekmm/IDEConfig")
-                .then()
-                .statusCode(HttpStatus.OK.value());
+            .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("fullName", equalTo("yacekmm/IDEConfig"))
+                .body("cloneUrl", equalTo("https://github.com/yacekmm/IDEConfig.git"));
     }
 
 }

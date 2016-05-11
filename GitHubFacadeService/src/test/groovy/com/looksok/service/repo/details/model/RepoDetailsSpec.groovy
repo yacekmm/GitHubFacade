@@ -27,6 +27,6 @@ class RepoDetailsSpec extends Specification {
         result.getDescription() == expectedDescription
         result.getFullName() == expectedFullName
         result.getStars() == expectedStarsCount
-        result.getCloneUri() == expectedCloneUri
+        result.getCloneUrl() == expectedCloneUri
     }
 }
