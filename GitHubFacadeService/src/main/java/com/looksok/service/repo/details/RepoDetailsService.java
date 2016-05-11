@@ -36,26 +36,23 @@ public class RepoDetailsService {
     public Optional<RepoDetails> requestRepoDetails(String ownerUsername, String repoName){
 
         URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHubUrl.REPOS)
-                .path(ownerUsername)
-                .path("/")
-                .path(repoName)
-                .build(true).toUri();
+                .path(ownerUsername).path("/").path(repoName).build(true).toUri();
 
         try{
             ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
                     .getForEntity(targetUrl, GitHubRepoModelSimple.class);
-            System.out.println("RESULT: " + result);
+            log.info("Received repo details: " + result);
             return Optional.of(RepoDetails.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {
             if(e.getStatusCode() == HttpStatus.NOT_FOUND){
                 log.info("Repo for user [" + ownerUsername + "] repoName [" + repoName + "] was not found");
                 throw new RepoNotFoundException(e.getMessage());
             }else{
-                log.info("Http Client exception occurred. Returning empty result");
+                log.info("HttpClientErrorException occurred (Returning empty result): " + e.getMessage());
                 return Optional.empty();
             }
         } catch(RestClientException e){
-            log.info("Client exception occurred. Returning empty result");
+                log.info("HttpClientException occurred (Returning empty result): " + e.getMessage());
             return Optional.empty();
         }
     }

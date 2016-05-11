@@ -46,5 +46,4 @@ public class GitHubFacadeServiceIntegrationTest {
             .then()
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
-
 }
