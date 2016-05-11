@@ -64,6 +64,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('com.google.guava:guava:18.0')
 
+    compile('com.mangofactory:swagger-springmvc:1.0.2')
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework:spring-test')
 	testCompile('junit:junit:4.11')
