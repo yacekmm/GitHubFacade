@@ -51,6 +51,9 @@ public class RepoController {
         } catch (RepoNotFoundException e) {
             log.info("Requested repository was not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e){
+            log.info("repo user / repo name params are invalid: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }

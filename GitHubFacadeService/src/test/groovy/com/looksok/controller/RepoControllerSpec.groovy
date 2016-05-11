@@ -66,6 +66,17 @@ class RepoControllerSpec extends Specification {
         actualResponseEntity.getStatusCode() == HttpStatus.NOT_FOUND
     }
 
+    def "returns BadRequest on IllegalArgException from service"(){
+        given:
+        repoDetailsServiceMock.requestRepoDetails(*_) >> {throw new IllegalArgumentException("msg") }
+
+        when:
+        def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
+
+        then:
+        actualResponseEntity.getStatusCode() == HttpStatus.BAD_REQUEST
+    }
+
     def "returns BadRequest on invalid params"(){
         when:
         def actualResponseEntity_nullUser = repoController.getRepoDetails(null, "validRepoName")

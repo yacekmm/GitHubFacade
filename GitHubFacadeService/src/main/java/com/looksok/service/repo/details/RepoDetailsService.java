@@ -32,13 +32,15 @@ public class RepoDetailsService {
 
     /**
      * @throws RepoNotFoundException when user/repo pair does not exist
+     * @throws IllegalArgumentException owner / repo params are invalid on request url creation
      */
     public Optional<RepoDetails> requestRepoDetails(String ownerUsername, String repoName) {
 
-        URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHub.URL_REPOS)
-                .path(ownerUsername).path("/").path(repoName).build(true).toUri();
 
         try {
+            URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHub.URL_REPOS)
+                .path(ownerUsername).path("/").path(repoName).build(true).toUri();
+
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(ConstAppLogic.GitHub.HEADER_ACCEPT_V3));
 
@@ -57,6 +59,9 @@ public class RepoDetailsService {
         } catch (RestClientException e) {
             log.info("HttpClientException occurred (Returning empty result): " + e.getMessage());
             return Optional.empty();
+        } catch (IllegalArgumentException e){
+            log.info("Illegal argument exception in url: " + e.getMessage());
+            throw e;
         }
     }
 
