@@ -61,6 +61,7 @@ task integrationTest(type: Test) {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('com.google.guava:guava:18.0')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -79,10 +80,5 @@ dependencies {
     integrationTestCompile sourceSets.test.output
     integrationTestRuntime configurations.testRuntime
 }
-
-//task integration(type: Test) {
-//    testClassesDir = sourceSets.integration.output.classesDir
-//    classpath = sourceSets.integration.runtimeClasspath
-//}
 
 

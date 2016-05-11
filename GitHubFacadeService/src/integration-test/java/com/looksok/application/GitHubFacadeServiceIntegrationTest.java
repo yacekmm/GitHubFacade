@@ -26,11 +26,11 @@ public class GitHubFacadeServiceIntegrationTest {
     }
 
     @Test
-	public void requestsSampleRepo() {
+    public void okReponseOnSampleRepo() {
         RestAssured.when()
-                .get("/api")
+                .get("/repositories/yacekmm/IDEConfig")
                 .then()
                 .statusCode(HttpStatus.OK.value());
-	}
+    }
 
 }

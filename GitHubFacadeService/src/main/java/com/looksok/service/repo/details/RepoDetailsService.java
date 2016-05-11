@@ -1,14 +1,53 @@
 package com.looksok.service.repo.details;
 
+import com.looksok.constants.ConstAppLogic;
+import com.looksok.service.rest.RestTemplatePrototype;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.Optional;
 
 @Component
 public class RepoDetailsService {
 
-    public ResponseEntity<RepoDetailsDto> requestRepoDetails(String ownerUsername, String repoName){
-        throw new NotImplementedException();
+    private RestTemplatePrototype restTemplatePrototype;
+
+    @Autowired
+    public RepoDetailsService(RestTemplatePrototype restTemplatePrototype) {
+        this.restTemplatePrototype = restTemplatePrototype;
+    }
+
+
+    /**
+     * @throws RepoNotFoundException when user/repo pair does not exist
+     */
+    public Optional<ResponseEntity<RepoDetailsDto>> requestRepoDetails(String ownerUsername, String repoName){
+
+        URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHubUrl.REPOS)
+                .path(ownerUsername)
+                .path("/")
+                .path(repoName)
+                .build(true).toUri();
+
+        try{
+            ResponseEntity<RepoDetailsDto> result = restTemplatePrototype.getRestTemplate().getForEntity(targetUrl, RepoDetailsDto.class);
+            System.out.println("RESULT: " + result);
+            return Optional.of(result);
+        } catch (HttpClientErrorException e) {
+            if(e.getStatusCode() == HttpStatus.NOT_FOUND){
+                throw new RepoNotFoundException(e.getMessage());
+            }else{
+                return Optional.empty();
+            }
+        } catch(RestClientException e){
+            return Optional.empty();
+        }
     }
 
 }
