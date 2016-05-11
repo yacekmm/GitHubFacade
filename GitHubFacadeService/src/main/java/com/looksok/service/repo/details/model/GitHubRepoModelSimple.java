@@ -8,11 +8,6 @@ public class GitHubRepoModelSimple {
     private int stargazers_count;
     private String created_at;
 
-    @SuppressWarnings("unused")
-    public GitHubRepoModelSimple() {
-        //used for Spring parser only
-    }
-
     public String getFull_name() {
         return full_name;
     }

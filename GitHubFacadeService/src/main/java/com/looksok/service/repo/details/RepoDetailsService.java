@@ -38,14 +38,8 @@ public class RepoDetailsService {
 
 
         try {
-            URI targetUrl = UriComponentsBuilder.fromUriString(ConstAppLogic.GitHub.URL_REPOS)
-                .path(ownerUsername).path("/").path(repoName).build(true).toUri();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Arrays.asList(ConstAppLogic.GitHub.HEADER_ACCEPT_V3));
-
             ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
-                    .exchange(targetUrl, HttpMethod.GET, new HttpEntity<Void>(null, headers), GitHubRepoModelSimple.class);
+                    .exchange(buildTargetUrl(ownerUsername, repoName), HttpMethod.GET, buildHttpEntity(), GitHubRepoModelSimple.class);
             log.info("Received repo details: " + result);
             return Optional.of(RepoDetails.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {
@@ -64,5 +58,17 @@ public class RepoDetailsService {
             throw e;
         }
     }
+
+    private HttpEntity<Void> buildHttpEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(ConstAppLogic.GitHub.HEADER_ACCEPT_V3));
+        return new HttpEntity<>(null, headers);
+    }
+
+    private URI buildTargetUrl(String ownerUsername, String repoName) {
+        return UriComponentsBuilder.fromUriString(ConstAppLogic.GitHub.URL_REPOS)
+                    .path(ownerUsername).path("/").path(repoName).build(true).toUri();
+    }
+
 
 }
