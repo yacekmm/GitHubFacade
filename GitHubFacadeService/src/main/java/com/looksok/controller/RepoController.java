@@ -40,16 +40,18 @@ public final class RepoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        try {
+//        try {
             Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
             return prepareResponseEntity(result);
-        } catch (RepoNotFoundException e) {
-            log.info("Requested repository was not found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (IllegalArgumentException e){
-            log.info("repo user / repo name params are invalid: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+//        }
+//        catch (RepoNotFoundException e) {
+//            log.info("Requested repository was not found");
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        catch (IllegalArgumentException e){
+//            log.info("repo user / repo name params are invalid: " + e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
 
     }
 
@@ -60,5 +62,10 @@ public final class RepoController {
             log.error("Error getting repo details. GitHub unavailable");
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
+    }
+
+
+    public Object repoNotFoundExceptionHandler(RepoNotFoundException exception) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

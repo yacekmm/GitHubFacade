@@ -55,26 +55,26 @@ class RepoControllerSpec extends Specification {
         actualResponseEntity.getBody() == expectedRepoDetailsMock
     }
 
-    def "handles RepoNotFound returning 404"(){
+    def "rethrows RepoNotFoundException"(){
         given:
         repoDetailsServiceMock.requestRepoDetails(*_) >> {throw new RepoNotFoundException("msg") }
 
         when:
-        def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
+        repoController.getRepoDetails("validUser", "validRepoName")
 
         then:
-        actualResponseEntity.getStatusCode() == HttpStatus.NOT_FOUND
+        thrown RepoNotFoundException
     }
 
-    def "returns BadRequest on IllegalArgException from service"(){
+    def "rethrows IllegalArgException from service"(){
         given:
         repoDetailsServiceMock.requestRepoDetails(*_) >> {throw new IllegalArgumentException("msg") }
 
         when:
-        def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
+        repoController.getRepoDetails("validUser", "validRepoName")
 
         then:
-        actualResponseEntity.getStatusCode() == HttpStatus.BAD_REQUEST
+        thrown IllegalArgumentException
     }
 
     def "returns BadRequest on invalid params"(){
@@ -95,5 +95,16 @@ class RepoControllerSpec extends Specification {
         actualResponseEntity_emptyUser.getStatusCode() == HttpStatus.BAD_REQUEST
         actualResponseEntity_emptyRepo.getStatusCode() == HttpStatus.BAD_REQUEST
         actualResponseEntity_emptyBoth.getStatusCode() == HttpStatus.BAD_REQUEST
+    }
+
+    def "repoNotFoundExceptionHandler returns 404 response with error body on RepoNotFoundException"(){
+        given:
+        String expectedMessage = "Requested user / repo pair was not found"
+
+        when:
+        def result = repoController.repoNotFoundExceptionHandler(new RepoNotFoundException(expectedMessage))
+
+        then:
+        result.getStatusCode() == HttpStatus.NOT_FOUND
     }
 }
