@@ -77,24 +77,23 @@ class RepoControllerSpec extends Specification {
         thrown GitHubUnavailableException
     }
 
-    def "returns BadRequest on invalid params"(){
-        when:
-        def actualResponseEntity_nullUser = repoController.getRepoDetails(null, "validRepoName")
-        def actualResponseEntity_nullRepo = repoController.getRepoDetails("validUser", null)
-        def actualResponseEntity_nullBoth = repoController.getRepoDetails(null, null)
+    def "throws IllegalArgumentException on invalid params"(){
+        expect:
+        try{
+            repoController.getRepoDetails(user, repo)
+            assert false
+        }catch(IllegalArgumentException e){
+            assert true
+        }
 
-        def actualResponseEntity_emptyUser = repoController.getRepoDetails("", "validRepoName")
-        def actualResponseEntity_emptyRepo = repoController.getRepoDetails("validUser", "")
-        def actualResponseEntity_emptyBoth = repoController.getRepoDetails("", "")
-
-        then:
-        actualResponseEntity_nullUser.getStatusCode() == HttpStatus.BAD_REQUEST
-        actualResponseEntity_nullRepo.getStatusCode() == HttpStatus.BAD_REQUEST
-        actualResponseEntity_nullBoth.getStatusCode() == HttpStatus.BAD_REQUEST
-
-        actualResponseEntity_emptyUser.getStatusCode() == HttpStatus.BAD_REQUEST
-        actualResponseEntity_emptyRepo.getStatusCode() == HttpStatus.BAD_REQUEST
-        actualResponseEntity_emptyBoth.getStatusCode() == HttpStatus.BAD_REQUEST
+        where:
+        user            | repo
+        null            | "validRepoName"
+        "validUser"     | null
+        null            | null
+        ""              | "validRepoName"
+        "validUser"     | ""
+        ""              | ""
     }
 
     def "repoNotFoundExceptionHandler returns 404 response with error body on RepoNotFoundException"(){

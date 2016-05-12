@@ -36,7 +36,7 @@ public final class RepoController {
 
         if (Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)) {
             log.info("BadRequest: params must not be null or empty");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("user / repo params must not be null or empty");
         }
 
         Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
