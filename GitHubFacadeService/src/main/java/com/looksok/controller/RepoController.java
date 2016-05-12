@@ -38,15 +38,8 @@ public final class RepoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-//        try {
-            Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
-            return prepareResponseEntity(result);
-//        }
-//        catch (IllegalArgumentException e){
-//            log.info("repo user / repo name params are invalid: " + e.getMessage());
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-
+        Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
+        return prepareResponseEntity(result);
     }
 
     private ResponseEntity<RepoDetailsModel> prepareResponseEntity(Optional<RepoDetailsModel> result) {
@@ -62,5 +55,11 @@ public final class RepoController {
     public ResponseEntity<ErrorMessage> repoNotFoundExceptionHandler(RepoNotFoundException exception) {
         log.info("Requested repository was not found: " + exception.getMessage());
         return new ResponseEntity<>(new ErrorMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorMessage> illegalArgumentExceptionHandler(IllegalArgumentException exception){
+        log.info("Provided user / repo params are invalid: " + exception.getMessage());
+        return new ResponseEntity<>(new ErrorMessage(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
