@@ -108,4 +108,16 @@ class RepoControllerSpec extends Specification {
         result.getStatusCode() == HttpStatus.NOT_FOUND
         result.getBody().getMessage() == expectedMessage
     }
+
+    def "illegalArgumentExceptionHandler returns 400 response on invalid repo/user params"(){
+        given:
+        String expectedMessage = "Requested user / repo pair was not found"
+
+        when:
+        def result = repoController.illegalArgumentExceptionHandler(new IllegalArgumentException(expectedMessage))
+
+        then:
+        result.getStatusCode() == HttpStatus.BAD_REQUEST
+        result.getBody().getMessage() == expectedMessage
+    }
 }
