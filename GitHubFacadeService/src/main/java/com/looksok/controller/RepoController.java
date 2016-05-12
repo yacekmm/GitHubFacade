@@ -3,6 +3,7 @@ package com.looksok.controller;
 import com.google.common.base.Strings;
 import com.looksok.service.repo.details.RepoDetailsService;
 import com.looksok.service.repo.details.exception.ErrorMessage;
+import com.looksok.service.repo.details.exception.GitHubUnavailableException;
 import com.looksok.service.repo.details.exception.RepoNotFoundException;
 import com.looksok.service.repo.details.model.RepoDetailsModel;
 import org.slf4j.Logger;
@@ -39,16 +40,9 @@ public final class RepoController {
         }
 
         Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
-        return prepareResponseEntity(result);
-    }
-
-    private ResponseEntity<RepoDetailsModel> prepareResponseEntity(Optional<RepoDetailsModel> result) {
-        if (result.isPresent()) {
-            return new ResponseEntity<>(result.get(), HttpStatus.OK);
-        } else {
-            log.error("Error getting repo details. GitHub unavailable");
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-        }
+        return new ResponseEntity<>(
+                result.orElseThrow(() -> new GitHubUnavailableException("Error getting repo details. GitHub unavailable")),
+                HttpStatus.OK);
     }
 
     @ExceptionHandler
@@ -61,5 +55,11 @@ public final class RepoController {
     public ResponseEntity<ErrorMessage> illegalArgumentExceptionHandler(IllegalArgumentException exception){
         log.info("Provided user / repo params are invalid: " + exception.getMessage());
         return new ResponseEntity<>(new ErrorMessage(exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorMessage> gitHubUnavailableExceptionHandler(GitHubUnavailableException exception){
+        log.error("GitHub unavailable: " + exception.getMessage());
+        return new ResponseEntity<>(new ErrorMessage(exception.getMessage()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

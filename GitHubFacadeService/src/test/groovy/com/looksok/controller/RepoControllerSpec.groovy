@@ -1,6 +1,7 @@
 package com.looksok.controller
 
 import com.looksok.service.repo.details.RepoDetailsService
+import com.looksok.service.repo.details.exception.GitHubUnavailableException
 import com.looksok.service.repo.details.exception.RepoNotFoundException
 import com.looksok.service.repo.details.model.RepoDetailsModel
 import org.springframework.http.HttpStatus
@@ -25,19 +26,7 @@ class RepoControllerSpec extends Specification {
         repoController.getRepoDetails(expectedOwner, expectedRepo)
 
         then:
-        1 * repoDetailsServiceMock.requestRepoDetails(expectedOwner, expectedRepo) >> Optional.empty()
-    }
-
-    def "returns 500 on unknown response from repoService"(){
-        given:
-        def serviceResult = Optional.empty()
-        repoDetailsServiceMock.requestRepoDetails(*_) >> serviceResult
-
-        when:
-        def actualResponseEntity = repoController.getRepoDetails("validUser", "validRepoName")
-
-        then:
-        actualResponseEntity.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE
+        1 * repoDetailsServiceMock.requestRepoDetails(expectedOwner, expectedRepo) >> Optional.of(Stub(RepoDetailsModel))
     }
 
     def "returns ResponseEntity from repoService"(){
@@ -75,6 +64,17 @@ class RepoControllerSpec extends Specification {
 
         then:
         thrown IllegalArgumentException
+    }
+
+    def "throws GitHubUnavailableException if result is missing"(){
+        given:
+        repoDetailsServiceMock.requestRepoDetails(*_) >> Optional.empty()
+
+        when:
+        repoController.getRepoDetails("validUser", "validRepoName")
+
+        then:
+        thrown GitHubUnavailableException
     }
 
     def "returns BadRequest on invalid params"(){
@@ -118,6 +118,18 @@ class RepoControllerSpec extends Specification {
 
         then:
         result.getStatusCode() == HttpStatus.BAD_REQUEST
+        result.getBody().getMessage() == expectedMessage
+    }
+
+    def "gitHubUnavailableExceptionHandler returns 503 response when there is no access to GitHub"(){
+        given:
+        String expectedMessage = "GitHub unavailable"
+
+        when:
+        def result = repoController.gitHubUnavailableExceptionHandler(new GitHubUnavailableException(expectedMessage))
+
+        then:
+        result.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE
         result.getBody().getMessage() == expectedMessage
     }
 }
