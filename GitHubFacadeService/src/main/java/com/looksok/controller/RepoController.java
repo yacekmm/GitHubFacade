@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
@@ -65,7 +62,7 @@ public final class RepoController {
         }
     }
 
-
+    @ExceptionHandler
     public ResponseEntity<ErrorMessage> repoNotFoundExceptionHandler(RepoNotFoundException exception) {
         log.info("Requested repository was not found: " + exception.getMessage());
         return new ResponseEntity<>(new ErrorMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
