@@ -4,7 +4,7 @@ import com.looksok.constants.ConstAppConfig;
 import com.looksok.service.repo.details.exception.RepoNotFoundException;
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple;
 import com.looksok.service.repo.details.model.RepoDetailsModel;
-import com.looksok.service.rest.RestTemplatePrototype;
+import com.looksok.service.rest.RestTemplateSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ import java.util.Optional;
 @Component
 public class RepoDetailsService {
 
-    private RestTemplatePrototype restTemplatePrototype;
+    private RestTemplateSingleton restTemplateSingleton;
 
     private Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
-    public RepoDetailsService(final RestTemplatePrototype restTemplatePrototype) {
-        this.restTemplatePrototype = restTemplatePrototype;
+    public RepoDetailsService(final RestTemplateSingleton restTemplateSingleton) {
+        this.restTemplateSingleton = restTemplateSingleton;
     }
 
     /**
@@ -39,7 +39,7 @@ public class RepoDetailsService {
 
 
         try {
-            ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
+            ResponseEntity<GitHubRepoModelSimple> result = restTemplateSingleton.getInstance()
                     .exchange(buildTargetUrl(ownerUsername, repoName), HttpMethod.GET, buildHttpEntity(), GitHubRepoModelSimple.class);
             return Optional.of(RepoDetailsModel.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {

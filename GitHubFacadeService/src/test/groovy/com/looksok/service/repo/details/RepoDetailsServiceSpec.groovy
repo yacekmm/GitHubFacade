@@ -4,7 +4,7 @@ import com.looksok.constants.ConstAppConfig
 import com.looksok.service.repo.details.exception.RepoNotFoundException
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple
 import com.looksok.service.repo.details.model.RepoDetailsModel
-import com.looksok.service.rest.RestTemplatePrototype
+import com.looksok.service.rest.RestTemplateSingleton
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,7 +16,7 @@ import spock.lang.Specification
 class RepoDetailsServiceSpec extends Specification {
 
     private RepoDetailsService repoDetailsService
-    private RestTemplatePrototype restTemplatePrototypeMock
+    private RestTemplateSingleton restTemplatePrototypeMock
     private RestTemplate restTemplateMock
 
     void setup() {
@@ -24,7 +24,7 @@ class RepoDetailsServiceSpec extends Specification {
         restTemplateMock = Mock()
         repoDetailsService = new RepoDetailsService(restTemplatePrototypeMock)
 
-        restTemplatePrototypeMock.getRestTemplate() >> restTemplateMock
+        restTemplatePrototypeMock.getInstance() >> restTemplateMock
     }
 
     def "RequestRepoDetails executes GET on restTemplate"() {
@@ -37,7 +37,7 @@ class RepoDetailsServiceSpec extends Specification {
         repoDetailsService.requestRepoDetails(expectedUser, expectedRepo)
 
         then:
-        1 * restTemplatePrototypeMock.getRestTemplate() >> restTemplateMock
+        1 * restTemplatePrototypeMock.getInstance() >> restTemplateMock
         1 * restTemplateMock.exchange(_, _, _, _) >> {actualUrl, method, entity, responseType ->
             assert actualUrl == expectedUri
             assert method == HttpMethod.GET
