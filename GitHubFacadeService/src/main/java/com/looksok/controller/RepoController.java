@@ -2,6 +2,7 @@ package com.looksok.controller;
 
 import com.google.common.base.Strings;
 import com.looksok.service.repo.details.RepoDetailsService;
+import com.looksok.service.repo.details.exception.ErrorMessage;
 import com.looksok.service.repo.details.exception.RepoNotFoundException;
 import com.looksok.service.repo.details.model.RepoDetailsModel;
 import org.slf4j.Logger;
@@ -65,7 +66,8 @@ public final class RepoController {
     }
 
 
-    public Object repoNotFoundExceptionHandler(RepoNotFoundException exception) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorMessage> repoNotFoundExceptionHandler(RepoNotFoundException exception) {
+        log.info("Requested repository was not found: " + exception.getMessage());
+        return new ResponseEntity<>(new ErrorMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

@@ -106,5 +106,6 @@ class RepoControllerSpec extends Specification {
 
         then:
         result.getStatusCode() == HttpStatus.NOT_FOUND
+        result.getBody().getMessage() == expectedMessage
     }
 }
