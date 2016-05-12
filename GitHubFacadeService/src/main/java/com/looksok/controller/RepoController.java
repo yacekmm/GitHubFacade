@@ -42,13 +42,7 @@ public final class RepoController {
 
         try {
             Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
-
-            if (result.isPresent()) {
-                return new ResponseEntity<>(result.get(), HttpStatus.OK);
-            } else {
-                log.error("Error getting repo details. GitHub unavailable");
-                return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-            }
+            return prepareResponseEntity(result);
         } catch (RepoNotFoundException e) {
             log.info("Requested repository was not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -57,5 +51,14 @@ public final class RepoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    private ResponseEntity<RepoDetailsModel> prepareResponseEntity(Optional<RepoDetailsModel> result) {
+        if (result.isPresent()) {
+            return new ResponseEntity<>(result.get(), HttpStatus.OK);
+        } else {
+            log.error("Error getting repo details. GitHub unavailable");
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }
     }
 }

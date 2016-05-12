@@ -33,7 +33,7 @@ public class RepoDetailsService {
 
     /**
      * @throws RepoNotFoundException when user/repo pair does not exist
-     * @throws IllegalArgumentException owner / repo params are invalid on request url creation
+     * @throws IllegalArgumentException when owner / repo params are invalid on url creation
      */
     public Optional<RepoDetailsModel> requestRepoDetails(String ownerUsername, String repoName) {
 
@@ -41,7 +41,6 @@ public class RepoDetailsService {
         try {
             ResponseEntity<GitHubRepoModelSimple> result = restTemplatePrototype.getRestTemplate()
                     .exchange(buildTargetUrl(ownerUsername, repoName), HttpMethod.GET, buildHttpEntity(), GitHubRepoModelSimple.class);
-            log.info("Received repo details: " + result);
             return Optional.of(RepoDetailsModel.fromGitHubModel(result.getBody()));
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
