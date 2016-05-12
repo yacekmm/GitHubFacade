@@ -35,7 +35,6 @@ public final class RepoController {
             @PathVariable(value = "repository-name") final String repoName) {
 
         if (Strings.isNullOrEmpty(owner) || Strings.isNullOrEmpty(repoName)) {
-            log.info("BadRequest: params must not be null or empty");
             throw new IllegalArgumentException("user / repo params must not be null or empty");
         }
 
