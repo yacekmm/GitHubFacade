@@ -13,6 +13,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Optional;
+
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -47,5 +49,23 @@ public class GitHubFacadeServiceApplicationTests {
         this.mockMvc
                 .perform(get("/repositories/user/repo") )
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void returnsBadRequestStatusOnIllegalArgumentException() throws Exception {
+        when(repoDetailsServiceMock.requestRepoDetails(anyString(), anyString())).thenThrow(IllegalArgumentException.class);
+
+        this.mockMvc
+                .perform(get("/repositories/user/repo") )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void returnsServiceUnavailableOnGitHubUnavailableException() throws Exception {
+        when(repoDetailsServiceMock.requestRepoDetails(anyString(), anyString())).thenReturn(Optional.empty());
+
+        this.mockMvc
+                .perform(get("/repositories/user/repo") )
+                .andExpect(status().isServiceUnavailable());
     }
 }
