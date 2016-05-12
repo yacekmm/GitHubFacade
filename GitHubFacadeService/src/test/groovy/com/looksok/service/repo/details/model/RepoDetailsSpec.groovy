@@ -12,7 +12,7 @@ class RepoDetailsSpec extends Specification {
         String expectedFullName = "fullName"
         Number expectedStarsCount = 13
 
-        GitHubRepoModelSimple gitHubModel = Mock()
+        GitHubRepoModelSimple gitHubModel = Stub()
         gitHubModel.getCreated_at() >> expectedCreatedAt
         gitHubModel.getDescription() >> expectedDescription
         gitHubModel.getFull_name() >> expectedFullName

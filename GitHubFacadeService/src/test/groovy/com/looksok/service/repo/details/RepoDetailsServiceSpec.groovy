@@ -51,7 +51,7 @@ class RepoDetailsServiceSpec extends Specification {
     def "RequestRepoDetails returns result as a parsed object"() {
         given:
         def responseEntityMock = Mock(ResponseEntity)
-        def gitHubModelMock = Mock(GitHubRepoModelSimple)
+        def gitHubModelMock = Stub(GitHubRepoModelSimple)
         responseEntityMock.getBody() >> gitHubModelMock;
         gitHubModelMock.getCreated_at() >> "2016-04-05T16:39:50Z"
         restTemplateMock.exchange(_, _, _, GitHubRepoModelSimple.class) >> responseEntityMock
