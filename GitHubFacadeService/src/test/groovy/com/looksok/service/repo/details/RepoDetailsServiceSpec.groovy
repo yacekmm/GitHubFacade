@@ -1,6 +1,6 @@
 package com.looksok.service.repo.details
 
-import com.looksok.constants.ConstAppLogic
+import com.looksok.constants.ConstAppConfig
 import com.looksok.service.repo.details.exception.RepoNotFoundException
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple
 import com.looksok.service.repo.details.model.RepoDetailsModel
@@ -31,7 +31,7 @@ class RepoDetailsServiceSpec extends Specification {
         given:
         String expectedUser = "user"
         String expectedRepo = "repo"
-        def expectedUri = new URI(ConstAppLogic.GitHub.URL_REPOS + expectedUser + "/" + expectedRepo)
+        def expectedUri = new URI(ConstAppConfig.GitHub.URL_REPOS + expectedUser + "/" + expectedRepo)
 
         when:
         repoDetailsService.requestRepoDetails(expectedUser, expectedRepo)

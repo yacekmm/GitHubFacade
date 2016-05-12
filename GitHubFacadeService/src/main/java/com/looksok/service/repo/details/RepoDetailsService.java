@@ -1,6 +1,6 @@
 package com.looksok.service.repo.details;
 
-import com.looksok.constants.ConstAppLogic;
+import com.looksok.constants.ConstAppConfig;
 import com.looksok.service.repo.details.exception.RepoNotFoundException;
 import com.looksok.service.repo.details.model.GitHubRepoModelSimple;
 import com.looksok.service.repo.details.model.RepoDetailsModel;
@@ -61,12 +61,12 @@ public class RepoDetailsService {
 
     private HttpEntity<Void> buildHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(ConstAppLogic.GitHub.HEADER_ACCEPT_V3));
+        headers.setAccept(Arrays.asList(ConstAppConfig.GitHub.HEADER_ACCEPT_V3));
         return new HttpEntity<>(null, headers);
     }
 
     private URI buildTargetUrl(String ownerUsername, String repoName) {
-        return UriComponentsBuilder.fromUriString(ConstAppLogic.GitHub.URL_REPOS)
+        return UriComponentsBuilder.fromUriString(ConstAppConfig.GitHub.URL_REPOS)
                     .path(ownerUsername).path("/").path(repoName).build(true).toUri();
     }
 
