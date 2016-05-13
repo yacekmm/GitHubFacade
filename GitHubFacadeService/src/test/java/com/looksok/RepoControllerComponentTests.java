@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = GitHubFacadeServiceApplication.class)
 @WebAppConfiguration
-public class ExceptionHandlerComponentTests {
+public class RepoControllerComponentTests {
 
     private RepoController repoController;
 
