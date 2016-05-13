@@ -50,18 +50,18 @@ class RepoDetailsServiceSpec extends Specification {
 
     def "RequestRepoDetails returns result as a parsed object"() {
         given:
-        def responseEntityMock = Mock(ResponseEntity)
-        def gitHubModelMock = Stub(GitHubRepoModelSimple)
-        responseEntityMock.getBody() >> gitHubModelMock;
-        gitHubModelMock.getCreated_at() >> "2016-04-05T16:39:50Z"
-        restTemplateMock.exchange(_, _, _, GitHubRepoModelSimple.class) >> responseEntityMock
+        def responseEntityStub = Stub(ResponseEntity)
+        def gitHubModelStub = Stub(GitHubRepoModelSimple)
+        responseEntityStub.getBody() >> gitHubModelStub;
+        gitHubModelStub.getCreated_at() >> "2016-04-05T16:39:50Z"
+        restTemplateMock.exchange(_, _, _, GitHubRepoModelSimple.class) >> responseEntityStub
 
         when:
         def repoDetails = repoDetailsService.requestRepoDetails("anyUser", "anyRepo")
 
         then:
         repoDetails.isPresent()
-        repoDetails.get() == RepoDetailsModel.fromGitHubModel(gitHubModelMock)
+        repoDetails.get() == RepoDetailsModel.fromGitHubModel(gitHubModelStub)
     }
 
     def "RequestRepoDetails returns empty optional on RestClientException"() {
