@@ -40,7 +40,8 @@ public final class RepoController {
 
         Optional<RepoDetailsModel> result = repoDetailsService.requestRepoDetails(owner, repoName);
         return new ResponseEntity<>(
-                result.orElseThrow(() -> new GitHubUnavailableException("Error getting repo details. GitHub unavailable")),
+                result.orElseThrow(
+                        () -> new GitHubUnavailableException("Error getting repo details. GitHub unavailable")),
                 HttpStatus.OK);
     }
 
